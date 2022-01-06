@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+
+django/staticfiles
+certbot/conf/*
+certbot/www/*
+
+.env
+prod.env
