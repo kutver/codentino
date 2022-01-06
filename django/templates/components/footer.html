@@ -1,0 +1,35 @@
+<footer class="bg-dark mt-5 fs-6 shadow">
+ <div class="container">
+  <div class="row row-cols-1 row-cols-sm-2 py-2">
+   <div class="col float-left text-center my-1">
+    <a href="{% url 'blog:index' %}" class="link-secondary" title="{{ SITE_BRAND_URL }}">{{ SITE_BRAND_URL }}</a> <span class='text-secondary'>© {% now "Y" %}</span>
+   </div>
+   <div class="col float-right text-center my-1">
+    {% load flatpages %}
+    {% get_flatpages as flatpages %}
+    {% for page in flatpages %}
+    <a class="px-2 link-secondary" href="{{ page.url }}">{{ page.title }}</a>
+    {% endfor %}
+   </div>
+  </div>
+
+  {% if request.COOKIES.cookie_consent != 'yes' %}
+  <div class="row row-cols-1 bg-dark cookie-alert">
+   <p class="text-white text-center shadow">
+   {{ SITE_BRAND_URL }} uses <a href="/privacy" class='link-secondary'>cookies</a> to deliver the best experience.
+   <button type="button" class="btn btn-sm btn-dark border"
+    onclick="setConsentCookie(); this.parentNode.style.display = 'none';">OK!</button>
+   </p>
+  </div>
+  <script>
+   function setConsentCookie() {
+    var d = new Date();
+    d.setTime(d.getTime() + (2 * 365 * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = 'cookie_consent' + "=" + 'yes' + ";" + expires + ";path=/";
+   }
+  </script>
+  {% endif %}
+
+ </div>
+</footer>

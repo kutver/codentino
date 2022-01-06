@@ -1,0 +1,30 @@
+{% extends 'components/base.html' %}
+
+{% block title %}Signup{% endblock title %}
+
+{% block content %}
+<main class="container">
+ <div class="row">
+  <div class="col mx-auto">
+   <div class="card bg-dark text-white-50 fw-lighter p-3 mb-4 shadow">
+    <div class="card-body">
+     <p class="fs-4">
+      You are about to use your {{account.get_provider.name}} account to login.
+      As a final step, please complete the following form:</p>
+
+      <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="btn btn-block btn-secondary mt-3">Sign Up &raquo;</button>
+      </form>
+
+    </div>
+   </div>
+  </div>
+ </div>
+
+</main>
+{% endblock content %}

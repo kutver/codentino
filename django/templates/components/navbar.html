@@ -1,0 +1,26 @@
+<nav class="navbar navbar-dark bg-dark mb-4 shadow">
+ <div class="container">
+  <a class="navbar-brand" href="{% url 'blog:index' %}">{{ SITE_BRAND_URL }}</a>
+  <ul class="nav justify-content-end">
+   <li class="nav-item">
+    <a class="nav-link link-secondary" href="{% url 'tag:index' %}">Tags</a>
+   </li>
+   {% if user.is_authenticated %}
+   {% if user.is_superuser %}
+   <li class="nav-item">
+    <a class="nav-link link-secondary" href="{% url 'admin:index' %}">Manage</a>
+   </li>
+   {% endif %}
+   <li class="nav-item">
+    <form method="post" action="{% url 'account_logout' %}">
+     {% csrf_token %}
+     {% if redirect_field_value %}
+     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+     {% endif %}
+     <button type="submit" class="btn btn-link link-secondary">Sign Out</button>
+    </form>
+   </li>
+  </ul>
+  {% endif %}
+ </div>
+</nav>

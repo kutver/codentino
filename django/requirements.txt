@@ -1,0 +1,6 @@
+Django
+gunicorn
+psycopg2-binary
+django-allauth
+martor
+django-mptt

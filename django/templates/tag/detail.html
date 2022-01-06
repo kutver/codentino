@@ -1,0 +1,31 @@
+{% extends 'components/base.html' %}
+
+{% block title %}#{{tag.slug}}{% endblock title %}
+{% block description %}{{tag.description}}{% endblock description %}
+
+{% block content %}
+<main class="container">
+ <div class="row">
+  <div class="col mx-auto text-white">
+   <h1 class="card-title">#{{tag.slug}}</h1>
+   <p class="mb-4 lead">{{tag.description}}</p>
+  </div>
+ </div>
+ <div class="row">
+  <div class="col mx-auto">
+   {% for post in tag.posts.all %}
+   {% include "blog/post-list-item.html" with post=post %}
+   {% endfor %}
+
+   {% comment "Series can be tagged too. In case when we wanna show series here." %}
+   Choices are: children, description, id, slug, parent, parent_id, series_tags, posts
+   {% for child in tag.series_tags.all %}
+   <p>{{ child.slug }}</p>
+   {% endfor %}
+   {% endcomment %}
+
+  </div>
+ </div>
+ </div>
+</main>
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% load account socialaccount %}
+
+{% block content %}
+<h1 class='card-title'>Comment</h1>
+<small><a rel="nofollow"
+  id="cancel-comment-reply-link" class="float-end link-secondary" href="#"
+  style="display:none;">Cancel reply</a></small>
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>Please sign in or sign up with one of below services to share your thoughts.</p>
+
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+<ul>
+ {% for provider in socialaccount_providers %}
+ <li>
+  <a title="{{provider.name}}" class="link-secondary {{provider.id}}"
+   href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params next=request.path %}">{{provider.name}}</a>
+ </li>
+ {% endfor %}
+</ul>
+
+
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'components/base.html' %}
+
+{% block title %}Tags{% endblock title %}
+
+{% block content %}
+{% load mptt_tags %}
+<main class="container">
+ <div class="row">
+  <div class="col mx-auto">
+    <div class="card bg-dark text-white-50 fw-lighter p-3 my-4 shadow">
+        <div class="card-body">
+         <h1 class="card-title">Tags</h1>
+         <p class="fs-4">Use tags to filter the post you might be interested in.</p>
+         <ul class="fs-3">
+            {% recursetree tags %}
+                <li>
+                    <a href="{% url 'tag:tag' node.slug %}" class="link-secondary">{{ node.slug }}</a>
+                    {% if not node.is_leaf_node %}
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endrecursetree %}
+        </ul>
+        </div>
+       </div>
+  </div>
+ </div>
+ </div>
+</main>
+{% endblock content %}

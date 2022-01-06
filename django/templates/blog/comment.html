@@ -1,0 +1,25 @@
+<ul class='pl-2'>
+ <li id="comment-{{comment.id}}" class="card text-white-50 bg-secondary mb-3">
+  <div class="card-body fs-5">
+   <div class="card-title">{{ comment.author }} <span
+     class='float-end fs-6 text-secondary'>{{comment.published_at|date:"d M Y H:i:s"}}</span></div>
+   <p class="card-text">{{ comment.comment }}</p>
+  </div>
+  <div class="card-footer">
+   <a rel="nofollow"
+      class="link-secondary comment-reply-link"
+      href="#comment-{{comment.id}}"
+      data-commentid="{{comment.id}}"
+      data-belowelement="comment-{{comment.id}}"
+      data-respondelement="respond"
+   >Reply</a>
+  </div>
+ </li>
+
+ {% if not comment.is_leaf_node %}
+ <ul class='pl-2'>
+  {{ children }}
+ </ul>
+ {% endif %}
+
+</ul>

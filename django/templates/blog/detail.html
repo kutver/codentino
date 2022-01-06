@@ -1,0 +1,76 @@
+{% extends 'components/base.html' %}
+
+{% block title %}{{post.title}}{% endblock title %}
+{% block description %}{{post.description}}{% endblock description %}
+
+{% block content %}
+<main class="container">
+ <div class="row">
+  <div class="col mx-auto">
+   <div class="card bg-dark text-white-50 fw-lighter p-3 mb-4 shadow">
+    <div class="card-body">
+     <h1 class="card-title"><a href='{% url 'blog:post' post.slug %}' class="link-secondary">{{ post.title }}</a></h1>
+     <span class="text-muted">{{ post.published_at|date:"d M Y" }}</span>
+     <p class="fs-4">{{ post.description }}</p>
+
+     {% load martortags %}
+     {{ post.post| safe_markdown }}
+
+     {% if post.tags.all %}
+     <div class="tags my-4">
+      {% for tag in post.tags.all %}
+      <a href="{% url 'tag:tag' tag.slug %}"
+       class="badge bg-secondary link-secondary border border-1 border-secondary fs-6">#{{ tag.slug }}</a>
+      {% endfor %}
+     </div>
+     {% endif %}
+    </div>
+   </div>
+  </div>
+ </div>
+ {% if post.comments.all %}
+ <div class="row">
+  <div class="col mx-auto">
+   <div class="card bg-dark text-white-50 fw-lighter p-3 mb-4 shadow">
+    <div class="card-body">
+     <h1 class=" pl-2 card-title">Comments ({{post.comments.all|length}})</h1>
+     {% load mptt_tags %}
+     {% recursetree post.comments.all %}
+     {% include "blog/comment.html" with comment=node %}
+     {% endrecursetree %}
+    </div>
+   </div>
+  </div>
+ </div>
+ {% endif %}
+ <div class="row" id='respond'>
+  <div class="col mx-auto">
+   <div class="card bg-dark text-white-50 fw-lighter p-3 mb-4 shadow">
+    <div class="card-body">
+      {% if user.is_authenticated %}
+      <small>Commenting as {{ user }}</small>
+      <small><a rel="nofollow"
+        id="cancel-comment-reply-link" class="float-end link-secondary" href="#"
+        style="display:none;">Cancel reply</a></small>
+     <form action="" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <div class="d-grid gap-2">
+       <button type="submit" class="btn btn-block btn-secondary mt-3">Comment</button>
+      </div>
+      {% else %}
+      {% include 'blog/comment-login.html' %}
+      {% endif %}
+     </form>
+    </div>
+   </div>
+  </div>
+ </div>
+</main>
+{% endblock content %}
+
+{% block page_only_js %}
+{% load static %}
+<script src="{% static 'prism.js' %}" defer></script>
+<script src="{% static 'comment-reply.js' %}" defer></script>
+{% endblock page_only_js %} 

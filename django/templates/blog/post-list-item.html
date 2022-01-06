@@ -1,0 +1,9 @@
+<a href="{% url 'blog:post' post.slug %}" class="text-decoration-none">
+ <div class="card bg-dark text-white-50 fw-lighter p-3 card-hoverable my-4 shadow">
+  <div class="card-body">
+   <h1 class="card-title">{{ post.title }}</h1>
+   <span class="text-muted">{{ post.published_at|date:"d M Y" }}</span>
+   <p class="fs-4">{{ post.description }}</p>
+  </div>
+ </div>
+</a>
