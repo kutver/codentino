@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: django.Dockerfile
+    restart: on-failure
+    volumes:
+      - "./django:/backend"
+      - static_volume:/backend/staticfiles
+    command: >
+      bash -c "./wait-for-it.sh ${POSTGRES_HOST}:5432
+      && python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14.1
+    restart: on-failure
+    user: postgres  # Non-root user.
+    volumes:
+      - "/var/lib/postgresql/${POSTGRES_DB}:/var/lib/postgresql/data"
+    env_file:
+      - .env
+    expose:
+      - "5432"
+
+volumes:
+ static_volume:
