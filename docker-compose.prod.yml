@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  django:
+    restart: always
+    command: >
+      bash -c "./wait-for-it.sh ${POSTGRES_HOST}:5432
+      && python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py collectstatic --clear --noinput
+      &&  gunicorn codentino.wsgi:application --bind :8000 --workers 3 --timeout 120"
+
+  postgres:
+    restart: always
+  
+  nginx:
+    restart: always
+    build: ./nginx
+    volumes:
+      - static_volume:/backend/staticfiles
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"     
+    depends_on:
+     - django
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    restart: always
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+ static_volume:
