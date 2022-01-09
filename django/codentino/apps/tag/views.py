@@ -9,3 +9,7 @@ class TagListView(generic.ListView):
 class TagView(generic.DetailView):
     model = Tag
     template_name = 'tag/detail.html'
+
+    def get_queryset(self):
+        return Tag.objects.filter(posts__published=1).order_by('-posts__updated_at')
+    

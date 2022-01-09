@@ -12,11 +12,12 @@ class IndexView(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.order_by('-updated_at')
+        return Post.objects.filter(published='1').order_by('-updated_at')
 
 class PostView(generic.DetailView):
     model = Post
     template_name = 'blog/detail.html'
+    queryset = Post.objects.filter(published='1')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

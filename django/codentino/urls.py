@@ -23,7 +23,7 @@ from codentino.apps.blog.models import Post
 from codentino.settings import ADMIN_PATH
 
 posts_sitemap_info = {
-    'queryset': Post.objects.all(),
+    'queryset': Post.objects.filter(published='1').order_by('-updated_at'),
     'date_field': 'updated_at',
 }
 
