@@ -7,8 +7,8 @@ services:
       dockerfile: django.Dockerfile
     restart: on-failure
     volumes:
-      - "./django:/backend"
-      - static_volume:/backend/staticfiles
+      - ".:/codentino"
+      - static_volume:/codentino/django/staticfiles
     command: >
       bash -c "./wait-for-it.sh ${POSTGRES_HOST}:5432
       && python manage.py makemigrations

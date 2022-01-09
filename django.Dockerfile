@@ -5,11 +5,11 @@ RUN apt-get update && apt-get upgrade -y && apt-get install git -y
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /backend
-RUN mkdir static
+WORKDIR /codentino/django/
+RUN mkdir -p codentino/django/static
 
-COPY ./django/requirements.txt /backend/requirements.txt
+COPY ./django/requirements.txt /codentino/django/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./django/ /backend
+COPY ./ /codentino/
 
