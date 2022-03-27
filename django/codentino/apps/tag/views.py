@@ -15,5 +15,5 @@ class TagView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(published='1', tags=self.object)
+        context['posts'] = Post.objects.filter(published='1', tags=self.object).order_by('-updated_at')
         return context
