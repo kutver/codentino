@@ -13,9 +13,13 @@
  </div>
  <div class="row">
   <div class="col mx-auto">
-   {% for post in tag.posts.all %}
+   {% if posts %}
+   {% for post in posts.all %}
    {% include "blog/post-list-item.html" with post=post %}
    {% endfor %}
+   {% else %}
+   <p class="text-white">There are no posts for this tag yet.</p>
+   {% endif %}   
 
    {% comment "Series can be tagged too. In case when we wanna show series here." %}
    Choices are: children, description, id, slug, parent, parent_id, series_tags, posts
